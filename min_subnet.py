@@ -26,15 +26,6 @@ def parse_IPv4(str_ip):
 def ip_to_binary(ip_address):
     return "".join(f"{octet:08b}" for octet in ip_address)
 
-#формируем ответ в префиксном виде
-def get_answer_ipv4(ip,mask):
-    elements_network_adress = [ip[i] & mask[i] for i in range(4)]
-    network_adress = '.'.join(map(str, elements_network_adress))
-    prefix = 0
-    for i in range(4):
-        prefix += bin(mask[i])[2:].count('1')
-    return network_adress + '/' + str(prefix)
-
 #вычисляем подсеть
 def calc(*ip):
     ip_addresses = ip[:-1]
