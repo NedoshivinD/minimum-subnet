@@ -26,6 +26,58 @@ def parse_IPv4(str_ip):
 def ip_to_binary(ip_address):
     return "".join(f"{octet:08b}" for octet in ip_address)
 
+# Вычисляем максимальный из ip адресов
+def max_IPv4(ip_adresses):
+    ar_ind = [x for x in range(0,len(ip_adresses))]
+    for j in range(4):
+        max_el = ip_adresses[ar_ind[0]][j]
+        index_in_ar_ind = 0
+        max_ind = ar_ind[0]
+        i = ar_ind[0]
+        while i in ar_ind:
+            index_in_ar_ind+=1
+            if ip_adresses[i][j] > max_el:
+                max_el = ip_adresses[i][j]
+                ar_ind.remove(max_ind)
+                max_ind = i
+                index_in_ar_ind-=1
+            elif ip_adresses[i][j] < max_el:
+                ar_ind.remove(i)
+                index_in_ar_ind-=1
+            if index_in_ar_ind<len(ar_ind):
+                i=ar_ind[index_in_ar_ind]
+            else:
+                break
+        if len(ar_ind) == 1:
+            break
+    return ip_adresses[max_ind]
+
+# Вычисляем минимальный IP адрес
+def min_IPv4(ip_adresses):
+    ar_ind = [x for x in range(0,len(ip_adresses))]
+    for j in range(4):
+        min_el = ip_adresses[ar_ind[0]][j]
+        min_ind = ar_ind[0]
+        index_in_ar_ind = 0
+        i = ar_ind[0]
+        while i in ar_ind:
+            index_in_ar_ind+=1
+            if ip_adresses[i][j] < min_el:
+                min_el = ip_adresses[i][j]
+                ar_ind.remove(min_ind)
+                min_ind = i
+                index_in_ar_ind-=1
+            elif ip_adresses[i][j] > min_el:
+                ar_ind.remove(i)
+                index_in_ar_ind-=1
+            if index_in_ar_ind<len(ar_ind):
+                i=ar_ind[index_in_ar_ind]
+            else:
+                break
+        if len(ar_ind) == 1:
+            break
+    return ip_adresses[min_ind]
+
 #вычисляем подсеть
 def calc(*ip):
     ip_addresses = ip[:-1]
@@ -38,8 +90,8 @@ def calc(*ip):
         parsed_ip = []
         for i in range(len(ip_addresses)):
             parsed_ip.append(parse_IPv4(ip_addresses[i]))
-        max_ipv4 = max(parsed_ip, key=sum)
-        min_ipv4 = min(parsed_ip, key=sum)
+        max_ipv4 = max_IPv4(parsed_ip)
+        min_ipv4 = min_IPv4(parsed_ip)
         binary_max_ip = ip_to_binary(max_ipv4)
         binary_min_ip = ip_to_binary(min_ipv4)
 
